@@ -30,11 +30,11 @@ export class FilesController {
       }),
     }),
   )
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
+  uploadFile(@UploadedFile() file: any) {
     return {
       originalname: file.originalname,
       filename: file.filename,
-      url: `/uploads/${file.filename}`, // URL relative pour le client
+      url: `/uploads/${file.filename}`, 
     };
   }
 
