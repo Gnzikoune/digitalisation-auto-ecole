@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AutoEcolesModule } from './modules/auto-ecoles/auto-ecoles.module';
 import { CandidatsModule } from './modules/candidats/candidats.module';
+import { ExamensModule } from './modules/examens/examens.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { CandidatsModule } from './modules/candidats/candidats.module';
     }),
     AutoEcolesModule,
     CandidatsModule,
+    ExamensModule,
   ],
   controllers: [AppController],
   providers: [AppService],
