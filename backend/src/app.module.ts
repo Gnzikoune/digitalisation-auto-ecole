@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AutoEcolesModule } from './modules/auto-ecoles/auto-ecoles.module';
@@ -13,11 +15,17 @@ import { StatsModule } from './modules/stats/stats.module';
 import { MoniteursModule } from './modules/moniteurs/moniteurs.module';
 import { VehiculesModule } from './modules/vehicules/vehicules.module';
 import { InspectionsModule } from './modules/inspections/inspections.module';
+import { FilesModule } from './modules/files/files.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -43,6 +51,8 @@ import { InspectionsModule } from './modules/inspections/inspections.module';
     MoniteursModule,
     VehiculesModule,
     InspectionsModule,
+    FilesModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
