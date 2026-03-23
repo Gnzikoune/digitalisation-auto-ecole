@@ -9,6 +9,7 @@ import { ExamensModule } from './modules/examens/examens.module';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { PaiementsModule } from './modules/paiements/paiements.module';
+import { StatsModule } from './modules/stats/stats.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { PaiementsModule } from './modules/paiements/paiements.module';
     UsersModule,
     AuthModule,
     PaiementsModule,
+    StatsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
