@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { ExamensService } from './examens.service';
 import { CreateExamenDto } from './dto/create-examen.dto';
 import { UpdateExamenDto } from './dto/update-examen.dto';
@@ -8,6 +9,8 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { UserRole } from '../users/entities/user.entity';
 
+@ApiTags('Examens')
+@ApiBearerAuth()
 @Controller('modules/examens')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class ExamensController {

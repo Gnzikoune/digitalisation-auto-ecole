@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { CandidatsService } from './candidats.service';
 import { CreateCandidatDto } from './dto/create-candidat.dto';
 import { UpdateCandidatDto } from './dto/update-candidat.dto';
@@ -7,6 +8,7 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { UserRole } from '../users/entities/user.entity';
 
+@ApiTags('Candidats')
 @Controller('modules/candidats')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class CandidatsController {

@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { PaiementsService } from './paiements.service';
 import { CreatePaiementDto } from './dto/create-paiement.dto';
 import { UpdatePaiementDto } from './dto/update-paiement.dto';
@@ -7,6 +8,8 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { UserRole } from '../users/entities/user.entity';
 
+@ApiTags('Paiements')
+@ApiBearerAuth()
 @Controller('modules/paiements')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class PaiementsController {

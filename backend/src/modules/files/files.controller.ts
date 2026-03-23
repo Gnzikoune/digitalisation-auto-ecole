@@ -8,12 +8,15 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags, ApiBearerAuth, ApiConsumes, ApiBody } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import type { Response } from 'express';
 
+@ApiTags('Files')
+@ApiBearerAuth()
 @Controller('modules/files')
 export class FilesController {
   @Post('upload')

@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { MoniteursService } from './moniteurs.service';
 import { CreateMoniteurDto } from './dto/create-moniteur.dto';
 import { UpdateMoniteurDto } from './dto/update-moniteur.dto';
@@ -7,6 +8,8 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { UserRole } from '../users/entities/user.entity';
 
+@ApiTags('Moniteurs')
+@ApiBearerAuth()
 @Controller('modules/moniteurs')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class MoniteursController {

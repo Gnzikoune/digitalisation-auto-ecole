@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { AutoEcolesService } from './auto-ecoles.service';
 import { CreateAutoEcoleDto } from './dto/create-auto-ecole.dto';
 import { UpdateAutoEcoleDto } from './dto/update-auto-ecole.dto';
@@ -7,6 +8,8 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { UserRole } from '../users/entities/user.entity';
 
+@ApiTags('AutoEcoles')
+@ApiBearerAuth()
 @Controller('modules/auto-ecoles')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class AutoEcolesController {

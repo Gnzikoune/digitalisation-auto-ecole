@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { VehiculesService } from './vehicules.service';
 import { CreateVehiculeDto } from './dto/create-vehicule.dto';
 import { UpdateVehiculeDto } from './dto/update-vehicule.dto';
@@ -7,6 +8,8 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { UserRole } from '../users/entities/user.entity';
 
+@ApiTags('Vehicules')
+@ApiBearerAuth()
 @Controller('modules/vehicules')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class VehiculesController {
