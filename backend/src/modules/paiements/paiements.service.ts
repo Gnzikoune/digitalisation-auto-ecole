@@ -28,7 +28,7 @@ export class PaiementsService {
     const invoice = this.invoiceRepository.create({
       payment: savedPayment,
       invoice_number: `INV-${Date.now()}`,
-      amount: savedPayment.amount,
+      total_amount: savedPayment.amount,
       due_date: new Date(),
     });
     await this.invoiceRepository.save(invoice);
