@@ -1,0 +1,105 @@
+# 🏗️ Pourquoi commencer par le Backend ?
+### Plateforme Nationale Auto-Écoles & Examens — Gabon
+
+---
+
+## Principe fondamental
+
+> **Le front-end est une interface vers la donnée. Si la donnée est mal modélisée, l'interface ne peut que refléter des fondations fragiles.**
+
+Toutes les couches du système dépendent de la base de données :
+
+```
+Base de données  →  API (expose)  →  Front-end (affiche)
+```
+
+Inverser cet ordre, c'est décorer un appartement avant d'avoir posé les murs porteurs.
+
+---
+
+## 3 raisons clés pour ce projet
+
+### 1. Les données sont très interdépendantes
+Un candidat appartient à une auto-école → passe des examens → dans un centre → avec un examinateur → et génère des logs d'audit. Si une relation est mal conçue dès le départ, un simple écran devient techniquement impossible sans refonte complète.
+
+### 2. Les erreurs de modélisation coûtent très cher si découvertes tard
+
+| Moment de découverte | Coût |
+|---|---|
+| Phase modélisation | ⚡ 1 heure |
+| Phase API | 🔶 1–2 jours |
+| Phase front-end | 🟠 1 semaine |
+| Phase production | 🔴 Catastrophe |
+
+### 3. La conformité institutionnelle se lit dans la BDD
+Le Ministère, la CNPDCP et les bailleurs examinent quelles données sont collectées, comment elles sont structurées et si le principe de minimisation est respecté — tout cela est **visible dans le schéma BDD**, pas dans le front-end.
+
+---
+
+## Ordre idéal de développement
+
+```
+Phase 1 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ FONDATIONS
+│
+├── 1. Modélisation BDD          (1–2 semaines)
+│       Schéma conceptuel + logique
+│       Entités, relations, contraintes
+│       Principes : UUID, soft delete, historisation
+│
+├── 2. Migrations SQL             (1 semaine)
+│       Création des tables réelles (PostgreSQL)
+│       Index, clés étrangères, séquences
+│       Données de test (seed)
+│
+Phase 2 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ INFRASTRUCTURE
+│
+├── 3. API REST (NestJS)          (3–5 semaines)
+│       Endpoints par module métier
+│       Validation des données (DTOs)
+│       Documentation OpenAPI/Swagger
+│
+├── 4. Authentification (IAM)     (1–2 semaines)
+│       Keycloak : RBAC, MFA, OAuth2
+│       Guards et policies par rôle
+│       Journalisation des accès
+│
+Phase 3 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ INTERFACES
+│
+├── 5. Front-end (Next.js)        (4–6 semaines)
+│       Portail auto-écoles
+│       Portail candidats
+│       Portail administration État
+│
+└── 6. Dashboards & Analytics     (2–3 semaines)
+        Tableaux de bord KPIs
+        Graphiques de réussite / conformité
+        Rapports exportables
+```
+
+---
+
+## Stack technique souveraine retenue
+
+| Couche | Technologie | Rôle |
+|---|---|---|
+| Base de données | **PostgreSQL** (auto-hébergé) | Source de vérité unique |
+| API | **NestJS** (Node.js) | Exposition et logique métier |
+| Auth | **Keycloak** | IAM souverain, RBAC, MFA |
+| Stockage | **MinIO** | Fichiers et documents |
+| Front-end | **Next.js** | Interfaces utilisateurs |
+| Logs | **Grafana + Loki** | Audit et monitoring |
+| Hébergement | **VPS au Gabon** | Souveraineté des données |
+
+---
+
+## Résultat attendu par phase
+
+| Phase | Livrable | Valeur |
+|---|---|---|
+| BDD + SQL | Schéma stable, testé | Fondation immuable |
+| API + IAM | Back-end sécurisé et documenté | Prêt pour intégration |
+| Front + Analytics | Plateforme utilisable | MVP démontrable au Ministère |
+
+---
+
+> **Durée totale estimée (solo + IA) : 4 à 6 mois** pour un MVP institutionnel complet, prêt pour le pilote sur 2 auto-écoles.
