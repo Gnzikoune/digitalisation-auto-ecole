@@ -6,6 +6,7 @@ import { UpdatePaiementDto } from './dto/update-paiement.dto';
 import { Payment } from './entities/payment.entity';
 import { Invoice } from './entities/invoice.entity';
 import { Candidate } from '../candidats/entities/candidate.entity';
+import { AuditService } from '../audit/audit.service';
 
 @Injectable()
 export class PaiementsService {
@@ -16,20 +17,29 @@ export class PaiementsService {
     private readonly invoiceRepository: Repository<Invoice>,
     @InjectRepository(Candidate)
     private readonly candidateRepository: Repository<Candidate>,
+    private readonly auditService: AuditService,
   ) {}
 
-  async create(createPaiementDto: CreatePaiementDto): Promise<Payment> {
+  async create(createPaiementDto: CreatePaiementDto) {
     const payment = this.paymentRepository.create(createPaiementDto);
     const savedPayment = await this.paymentRepository.save(payment);
 
     // Génération automatique de facture
-    const invoiceNumber = `INV-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
     const invoice = this.invoiceRepository.create({
-      invoice_number: invoiceNumber,
-      total_amount: savedPayment.amount,
       payment: savedPayment,
+      invoice_number: `INV-${Date.now()}`,
+      amount: savedPayment.amount,
+      due_date: new Date(),
     });
     await this.invoiceRepository.save(invoice);
+
+    // Audit Log
+    await this.auditService.log({
+      action: 'CREATE_PAYMENT',
+      entity_name: 'Payment',
+      entity_id: savedPayment.id,
+      new_values: createPaiementDto,
+    });
 
     return savedPayment;
   }

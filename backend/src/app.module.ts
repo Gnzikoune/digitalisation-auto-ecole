@@ -17,6 +17,7 @@ import { VehiculesModule } from './modules/vehicules/vehicules.module';
 import { InspectionsModule } from './modules/inspections/inspections.module';
 import { FilesModule } from './modules/files/files.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
+import { AuditModule } from './modules/audit/audit.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
     InspectionsModule,
     FilesModule,
     NotificationsModule,
+    AuditModule,
   ],
   controllers: [AppController],
   providers: [AppService],
