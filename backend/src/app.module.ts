@@ -12,6 +12,7 @@ import { PaiementsModule } from './modules/paiements/paiements.module';
 import { StatsModule } from './modules/stats/stats.module';
 import { MoniteursModule } from './modules/moniteurs/moniteurs.module';
 import { VehiculesModule } from './modules/vehicules/vehicules.module';
+import { InspectionsModule } from './modules/inspections/inspections.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { VehiculesModule } from './modules/vehicules/vehicules.module';
     StatsModule,
     MoniteursModule,
     VehiculesModule,
+    InspectionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

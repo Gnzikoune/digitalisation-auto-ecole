@@ -16,6 +16,7 @@ export enum UserRole {
   ADMIN = 'admin',
   SCHOOL_ADMIN = 'school_admin',
   CANDIDATE = 'candidate',
+  DGTT_AGENT = 'dgtt_agent',
 }
 
 @Entity('users')
