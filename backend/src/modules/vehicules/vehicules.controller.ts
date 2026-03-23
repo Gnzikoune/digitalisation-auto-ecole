@@ -16,33 +16,33 @@ export class VehiculesController {
   constructor(private readonly vehiculesService: VehiculesService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Enregistrer un nouveau véhicule dans le parc' })
+  @ApiOperation({ summary: "Enregistrer un nouveau véhicule dans le parc" })
   @Roles(UserRole.ADMIN, UserRole.SCHOOL_ADMIN)
   create(@Body() createVehiculeDto: CreateVehiculeDto) {
     return this.vehiculesService.create(createVehiculeDto);
   }
 
   @Get()
-  @ApiOperation({ summary: 'Lister les véhicules (filtrable par auto-école)' })
+  @ApiOperation({ summary: "Lister les véhicules (filtrable par auto-école)" })
   findAll(@Query('driving_school_id') schoolId?: string) {
     return this.vehiculesService.findAll(schoolId);
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Détails techniques d'un véhicule' })
+  @ApiOperation({ summary: "Détails techniques d'un véhicule" })
   findOne(@Param('id') id: string) {
     return this.vehiculesService.findOne(id);
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Mettre à jour un véhicule' })
+  @ApiOperation({ summary: "Mettre à jour un véhicule" })
   @Roles(UserRole.ADMIN, UserRole.SCHOOL_ADMIN)
   update(@Param('id') id: string, @Body() updateVehiculeDto: UpdateVehiculeDto) {
     return this.vehiculesService.update(id, updateVehiculeDto);
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Supprimer un véhicule du parc' })
+  @ApiOperation({ summary: "Supprimer un véhicule du parc" })
   @Roles(UserRole.ADMIN, UserRole.SCHOOL_ADMIN)
   remove(@Param('id') id: string) {
     return this.vehiculesService.remove(id);

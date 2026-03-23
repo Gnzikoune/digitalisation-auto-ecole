@@ -33,36 +33,48 @@ export class ExamensService {
       where: { id },
       relations: ['results', 'results.candidate'],
     });
-    if (!exam) throw new NotFoundException('Session d\'examen non trouvée');
+    if (!exam) throw new NotFoundException("Session d'examen non trouvée");
     return exam;
   }
 
-  async addResult(createResultatDto: CreateResultatDto): Promise<ExamResult> {
-    const { candidate_id, exam_id, result } = createResultatDto;
+  async update(id: string, updateExamenDto: UpdateExamenDto): Promise<Exam> {
+    const exam = await this.findOne(id);
+    this.examRepository.merge(exam, updateExamenDto);
+    return await this.examRepository.save(exam);
+  }
 
-    // Vérifier l'existence
-    const candidate = await this.candidateRepository.findOne({ where: { id: candidate_id } });
-    if (!candidate) throw new NotFoundException('Candidat non trouvé');
+  async createConvocation(examId: string, dto: any): Promise<ExamResult> {
+    // Dans cette version, une convocation est un résultat vide (en attente)
+    const result = this.resultRepository.create({
+      ...dto,
+      exam_id: examId,
+      result: 'pending'
+    });
+    return await this.resultRepository.save(result);
+  }
 
-    const exam = await this.findOne(exam_id);
+  async updateResult(id: string, dto: any): Promise<ExamResult> {
+    const resultEntry = await this.resultRepository.findOne({ 
+      where: { id },
+      relations: ['candidate', 'exam']
+    });
+    if (!resultEntry) throw new NotFoundException("Ligne de résultat non trouvée");
 
-    const examResult = this.resultRepository.create(createResultatDto);
-    const savedResult = await this.resultRepository.save(examResult);
+    this.resultRepository.merge(resultEntry, dto);
+    const saved = await this.resultRepository.save(resultEntry);
 
-    // Logique de mise à jour du statut candidat
-    if (result === 'pass') {
-      if (exam.type === 'theory') {
-        candidate.status = 'training'; // Admis au code -> Passe à la conduite
-      } else if (exam.type === 'practical') {
-        candidate.status = 'licensed'; // Admis à la conduite -> Permis obtenu
+    // Mise à jour du statut candidat si réussi
+    if (dto.result === 'pass') {
+      const candidate = resultEntry.candidate;
+      if (resultEntry.exam.type === 'theory') {
+        candidate.status = 'training';
+      } else {
+        candidate.status = 'licensed';
       }
-      await this.candidateRepository.save(candidate);
-    } else if (result === 'fail') {
-      candidate.status = 'failed';
       await this.candidateRepository.save(candidate);
     }
 
-    return savedResult;
+    return saved;
   }
 
   async remove(id: string): Promise<void> {
