@@ -4,11 +4,11 @@ import { PaiementsService } from './paiements.service';
 import { PaiementsController } from './paiements.controller';
 import { Payment } from './entities/payment.entity';
 import { Invoice } from './entities/invoice.entity';
-import { CandidatsModule } from '../candidats/candidats.module';
+import { Candidate } from '../candidats/entities/candidate.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Payment, Invoice]),
+    TypeOrmModule.forFeature([Payment, Invoice, Candidate]),
     CandidatsModule,
   ],
   controllers: [PaiementsController],
