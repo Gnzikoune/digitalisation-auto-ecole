@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, Req } from '@nestjs/common';
-import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { InspectionsService } from './inspections.service';
 import { CreateInspectionDto } from './dto/create-inspection.dto';
 import { UpdateInspectionDto } from './dto/update-inspection.dto';
@@ -16,34 +16,34 @@ export class InspectionsController {
   constructor(private readonly inspectionsService: InspectionsService) {}
 
   @Post()
-  @Roles(UserRole.ADMIN, UserRole.DGTT_AGENT)
-  create(@Body() createInspectionDto: CreateInspectionDto) {
-    return this.inspectionsService.create(createInspectionDto);
+  @ApiOperation({ summary: "Créer un nouveau rapport d'inspection (Agent DGTT seul)" })
+  @Roles(UserRole.DGTT_AGENT, UserRole.ADMIN)
+  @ApiResponse({ status: 201, description: "Rapport créé." })
+  create(@Body() createInspectionDto: CreateInspectionDto, @Req() req: any) {
+    return this.inspectionsService.create(createInspectionDto, req.user.userId);
   }
 
   @Get()
-  @Roles(UserRole.ADMIN, UserRole.DGTT_AGENT, UserRole.SCHOOL_ADMIN)
-  findAll(@Query('school_id') schoolId: string, @Req() req: any) {
-    // Un gérant d'auto-école ne peut voir que les inspections de son établissement
-    if (req.user.role === UserRole.SCHOOL_ADMIN && req.user.driving_school_id) {
-       return this.inspectionsService.findAll(req.user.driving_school_id);
-    }
-    return this.inspectionsService.findAll(schoolId);
+  @ApiOperation({ summary: "Lister les inspections (filtrage par rôle automatique)" })
+  findAll(@Req() req: any) {
+    return this.inspectionsService.findAll(req.user);
   }
 
   @Get(':id')
-  @Roles(UserRole.ADMIN, UserRole.DGTT_AGENT, UserRole.SCHOOL_ADMIN)
-  findOne(@Param('id') id: string) {
-    return this.inspectionsService.findOne(id);
+  @ApiOperation({ summary: "Voir les détails d'un rapport de conformité" })
+  findOne(@Param('id') id: string, @Req() req: any) {
+    return this.inspectionsService.findOne(id, req.user);
   }
 
   @Patch(':id')
-  @Roles(UserRole.ADMIN)
+  @ApiOperation({ summary: "Modifier un rapport (Agent DGTT seul)" })
+  @Roles(UserRole.DGTT_AGENT, UserRole.ADMIN)
   update(@Param('id') id: string, @Body() updateInspectionDto: UpdateInspectionDto) {
     return this.inspectionsService.update(id, updateInspectionDto);
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: "Suppression logique d'un rapport" })
   @Roles(UserRole.ADMIN)
   remove(@Param('id') id: string) {
     return this.inspectionsService.remove(id);

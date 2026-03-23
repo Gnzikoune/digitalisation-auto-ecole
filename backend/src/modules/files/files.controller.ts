@@ -8,7 +8,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiBearerAuth, ApiConsumes, ApiBody } from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth, ApiConsumes, ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
@@ -20,29 +20,45 @@ import type { Response } from 'express';
 @Controller('modules/files')
 export class FilesController {
   @Post('upload')
-  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "Uploader un document (PDF, Image, etc.)" })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
         destination: './uploads',
-        filename: (req, file, callback) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-          const ext = extname(file.originalname);
-          callback(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
+        filename: (req, file, cb) => {
+          const randomName = Array(32)
+            .fill(null)
+            .map(() => Math.round(Math.random() * 16).toString(16))
+            .join('');
+          cb(null, `${randomName}${extname(file.originalname)}`);
         },
       }),
     }),
   )
-  uploadFile(@UploadedFile() file: any) {
+  uploadFile(@UploadedFile() file: Express.Multer.File) {
     return {
-      originalname: file.originalname,
       filename: file.filename,
-      url: `/uploads/${file.filename}`, 
+      mimetype: file.mimetype,
+      size: file.size,
     };
   }
 
   @Get(':filename')
-  serveFile(@Param('filename') filename: string, @Res() res: Response) {
-    res.sendFile(filename, { root: './uploads' });
+  @ApiOperation({ summary: "Récupérer un fichier par son nom (Visualisation/Téléchargement)" })
+  @ApiResponse({ status: 200, description: "Le fichier binaire." })
+  getFile(@Param('filename') filename: string, @Res() res: Response) {
+    return res.sendFile(filename, { root: './uploads' });
   }
 }
