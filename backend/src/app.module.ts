@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { AutoEcolesModule } from './modules/auto-ecoles/auto-ecoles.module';
 import { CandidatsModule } from './modules/candidats/candidats.module';
 import { ExamensModule } from './modules/examens/examens.module';
+import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -29,6 +31,8 @@ import { ExamensModule } from './modules/examens/examens.module';
     AutoEcolesModule,
     CandidatsModule,
     ExamensModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
