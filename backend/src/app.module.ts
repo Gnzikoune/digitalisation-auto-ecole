@@ -8,6 +8,7 @@ import { CandidatsModule } from './modules/candidats/candidats.module';
 import { ExamensModule } from './modules/examens/examens.module';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { PaiementsModule } from './modules/paiements/paiements.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { AuthModule } from './modules/auth/auth.module';
     ExamensModule,
     UsersModule,
     AuthModule,
+    PaiementsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
