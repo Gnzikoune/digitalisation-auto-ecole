@@ -8,6 +8,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { DrivingSchoolDocument } from './driving-school-document.entity';
+import { Candidate } from '../../candidats/entities/candidate.entity';
 // Entité principale pour la gestion des auto-écoles
 
 @Entity('driving_schools')
@@ -50,6 +51,9 @@ export class DrivingSchool {
 
   @OneToMany(() => DrivingSchoolDocument, (doc: DrivingSchoolDocument) => doc.driving_school)
   documents: DrivingSchoolDocument[];
+
+  @OneToMany(() => Candidate, (candidate) => candidate.driving_school)
+  candidates: Candidate[];
 
   @CreateDateColumn({ name: 'created_at' })
   created_at: Date;

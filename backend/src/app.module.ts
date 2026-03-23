@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AutoEcolesModule } from './modules/auto-ecoles/auto-ecoles.module';
+import { CandidatsModule } from './modules/candidats/candidats.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { AutoEcolesModule } from './modules/auto-ecoles/auto-ecoles.module';
       inject: [ConfigService],
     }),
     AutoEcolesModule,
+    CandidatsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
