@@ -10,6 +10,8 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { PaiementsModule } from './modules/paiements/paiements.module';
 import { StatsModule } from './modules/stats/stats.module';
+import { MoniteursModule } from './modules/moniteurs/moniteurs.module';
+import { VehiculesModule } from './modules/vehicules/vehicules.module';
 
 @Module({
   imports: [
@@ -37,6 +39,8 @@ import { StatsModule } from './modules/stats/stats.module';
     AuthModule,
     PaiementsModule,
     StatsModule,
+    MoniteursModule,
+    VehiculesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
