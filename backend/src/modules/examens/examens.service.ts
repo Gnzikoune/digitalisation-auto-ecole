@@ -3,7 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateExamenDto } from './dto/create-examen.dto';
 import { UpdateExamenDto } from './dto/update-examen.dto';
-import { CreateResultatDto } from './dto/create-resultat.dto';
+import { CreateConvocationDto } from './dto/create-convocation.dto';
+import { UpdateResultDto } from './dto/update-result.dto';
 import { Exam } from './entities/exam.entity';
 import { ExamResult } from './entities/exam-result.entity';
 import { Candidate } from '../candidats/entities/candidate.entity';
@@ -43,17 +44,16 @@ export class ExamensService {
     return await this.examRepository.save(exam);
   }
 
-  async createConvocation(examId: string, dto: any): Promise<ExamResult> {
-    // Dans cette version, une convocation est un résultat vide (en attente)
+  async createConvocation(examId: string, dto: CreateConvocationDto): Promise<ExamResult> {
     const result = this.resultRepository.create({
-      ...dto,
+      candidate_id: dto.candidate_id,
       exam_id: examId,
       result: 'pending'
     });
     return await this.resultRepository.save(result);
   }
 
-  async updateResult(id: string, dto: any): Promise<ExamResult> {
+  async updateResult(id: string, dto: UpdateResultDto): Promise<ExamResult> {
     const resultEntry = await this.resultRepository.findOne({ 
       where: { id },
       relations: ['candidate', 'exam']
@@ -63,7 +63,6 @@ export class ExamensService {
     this.resultRepository.merge(resultEntry, dto);
     const saved = await this.resultRepository.save(resultEntry);
 
-    // Mise à jour du statut candidat si réussi
     if (dto.result === 'pass') {
       const candidate = resultEntry.candidate;
       if (resultEntry.exam.type === 'theory') {
