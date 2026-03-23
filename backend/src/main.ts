@@ -23,6 +23,7 @@ async function bootstrap() {
     .addTag('Candidats')
     .addTag('AutoEcoles')
     .addTag('Auth')
+    .addTag('Utilisateurs')
     .addTag('Paiements')
     .addTag('Examens')
     .addTag('Stats')
