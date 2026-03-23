@@ -18,7 +18,7 @@ export class Invoice {
   invoice_number: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  date: Date;
+  due_date: Date;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   total_amount: number;
