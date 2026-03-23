@@ -41,6 +41,10 @@ database/data/
 # Keycloak
 keycloak/data/
 
+# Project sensitive documents
+*.pdf
+*.resolved
+
 # Python (temporary extraction scripts)
 extract_pdfs.py
 pdf_texts_output.json
