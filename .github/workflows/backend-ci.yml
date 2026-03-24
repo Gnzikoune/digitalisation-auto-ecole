@@ -1,0 +1,84 @@
+# Le nom de ce workflow (pipeline). C'est ce qui s'affichera dans l'onglet "Actions" sur GitHub.
+name: Backend CI
+
+# Événements (déclencheurs) qui lanceront ce pipeline automatiquement.
+on:
+  # À chaque fois qu'un développeur fait un "git push" (envoi direct de code)...
+  push:
+    # ...vers l'une des deux branches principales suivantes...
+    branches: [ "main", "develop" ]
+    # ...et SEULEMENT SI les fichiers modifiés font partie du dossier "backend" ou si c'est ce fichier CI lui-même.
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-ci.yml'
+      
+  # Pareil pour les "Pull Requests" (quand quelqu'un propose d'intégrer son code via GitHub)
+  pull_request:
+    branches: [ "main", "develop" ]
+    paths:
+      - 'backend/**'
+
+# Les tâches consécutives de ce pipeline.
+jobs:
+  # Nous créons une tâche principale appelée "build-and-test".
+  build-and-test:
+    # On précise à GitHub quelle "machine" utiliser (ici le dernier Système d'Exploitation Linux Ubuntu disponible).
+    runs-on: ubuntu-latest
+    
+    # Paramètres par défaut pour cette machine.
+    defaults:
+      run:
+        # Comme notre backend est dans un sous-dossier, on force l'ordinateur virtuel à toujours être dans "/backend".
+        working-directory: ./backend
+
+    # Les différentes "étapes" chronologiques à exécuter sur cette machine virtuelle.
+    steps:
+    # Étape 1 : Récupérer le code source ("git pull" automatique).
+    - name: 📥 Récupération du code
+      # Utilisation d'un script officiel GitHub pré-conçu.
+      uses: actions/checkout@v4
+
+    # Étape 2 : Installer Node.js (l'environnement de base du backend).
+    - name: ⚙️ Configuration de Node.js
+      # Utilisation du script officiel pour Node.
+      uses: actions/setup-node@v4
+      with:
+        # On choisit la version 20 (c'est la version Long Term Support actuelle la plus stable).
+        node-version: '20' 
+        # On dit à GitHub de garder en mémoire (cache) les téléchargements NPM pour aller plus vite les fois suivantes.
+        cache: 'npm'
+        # Emplacement spécifique où se trouve notre fiche de dépendances.
+        cache-dependency-path: './backend/package-lock.json'
+
+    # Étape 3 : Installer nos packages et dépendances (NestJS, TypeORM, Swagger, etc.)
+    - name: 📦 Installation des dépendances
+      # "npm ci" est comme "npm install" mais fait spécifiquement pour la production/CI (il respecte scrupuleusement le package-lock sans rien mettre à jour).
+      run: npm ci
+
+    # Étape 4 : Vérifier que le code est esthétiquement bien mis en forme (espacement, retours à la ligne).
+    - name: 🔍 Vérification du formatage (Prettier)
+      # On demande à Prettier (via npx) de tester les fichiers sans les modifier (mode --check).
+      run: npx prettier --check "src/**/*.ts"
+      # Si quelqu'un a mal formaté un code, ça fera une "erreure", mais on ne veut pas bloquer le reste (continue-on-error).
+      continue-on-error: true 
+
+    # Étape 5 : Analyse statique ("Grammaire" et qualité du code).
+    - name: 🧹 Analyse du code (ESLint)
+      # ESLint lit tout le code pour voir si on n'a pas laissé de variables inutiles, des fonctions obsolètes ou des fautes.
+      run: npm run lint
+
+    # Étape 6 : ESSAYER DE COMPILER LE SERVEUR
+    - name: 🏗️ Compilation du code (Build NestJS)
+      # Transforme le code TypeScript ultra moderne (src/) en JavaScript compréhensible par tous les serveurs (dist/). 
+      # C'est l'ultime test: si ça crash ici, le programme est cassé et GitHub mettra une belle croix ROUGE sur le code !
+      run: npm run build
+
+# --- SECTION TESTS (EN ATTENTE) ---
+# Ces lignes sont "commentées" (ignorées). Le jour où nous écrirons les tests unitaires et de bout en bout (e2e),
+# nous enlèverons ces dièses (#) pour qu'à chaque push, l'ordinateur virtuel teste absolument chaque route de l'API.
+
+#   - name: 🧪 Exécution des tests unitaires
+#     run: npm run test
+
+#   - name: 🧪 Exécution des tests End-to-End (e2e)
+#     run: npm run test:e2e
