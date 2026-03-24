@@ -15,7 +15,9 @@ export class DrivingSchoolDocument {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => DrivingSchool, (school) => school.documents, { onDelete: 'CASCADE' })
+  @ManyToOne(() => DrivingSchool, (school) => school.documents, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'driving_school_id' })
   driving_school: DrivingSchool;
 

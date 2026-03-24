@@ -1,5 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { ExamensService } from './examens.service';
 import { CreateExamenDto } from './dto/create-examen.dto';
 import { UpdateExamenDto } from './dto/update-examen.dto';
@@ -46,14 +55,20 @@ export class ExamensController {
   @Post(':id/convocations')
   @ApiOperation({ summary: "Convoquer un candidat à une session d'examen" })
   @Roles(UserRole.ADMIN, UserRole.SCHOOL_ADMIN)
-  createConvocation(@Param('id') id: string, @Body() createConvocationDto: CreateConvocationDto) {
+  createConvocation(
+    @Param('id') id: string,
+    @Body() createConvocationDto: CreateConvocationDto,
+  ) {
     return this.examensService.createConvocation(id, createConvocationDto);
   }
 
   @Patch('results/:id')
   @ApiOperation({ summary: "Saisir ou modifier le résultat d'un candidat" })
   @Roles(UserRole.ADMIN)
-  updateResult(@Param('id') id: string, @Body() updateResultDto: UpdateResultDto) {
+  updateResult(
+    @Param('id') id: string,
+    @Body() updateResultDto: UpdateResultDto,
+  ) {
     return this.examensService.updateResult(id, updateResultDto);
   }
 

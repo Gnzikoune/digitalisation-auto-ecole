@@ -18,7 +18,9 @@ export class CandidatsService {
   }
 
   async findAll(): Promise<Candidate[]> {
-    return await this.candidateRepository.find({ relations: ['driving_school'] });
+    return await this.candidateRepository.find({
+      relations: ['driving_school'],
+    });
   }
 
   async findBySchool(schoolId: string): Promise<Candidate[]> {
@@ -39,7 +41,10 @@ export class CandidatsService {
     return candidate;
   }
 
-  async update(id: string, updateCandidatDto: UpdateCandidatDto): Promise<Candidate> {
+  async update(
+    id: string,
+    updateCandidatDto: UpdateCandidatDto,
+  ): Promise<Candidate> {
     const candidate = await this.findOne(id);
     Object.assign(candidate, updateCandidatDto);
     return await this.candidateRepository.save(candidate);

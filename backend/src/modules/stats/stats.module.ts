@@ -7,9 +7,7 @@ import { Payment } from '../paiements/entities/payment.entity';
 import { ExamResult } from '../examens/entities/exam-result.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Candidate, Payment, ExamResult]),
-  ],
+  imports: [TypeOrmModule.forFeature([Candidate, Payment, ExamResult])],
   controllers: [StatsController],
   providers: [StatsService],
 })

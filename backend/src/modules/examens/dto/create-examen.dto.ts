@@ -7,7 +7,7 @@ export class CreateExamenDto {
   @IsNotEmpty()
   date: string;
 
-  @ApiProperty({ example: 'Centre d\'examen de Libreville' })
+  @ApiProperty({ example: "Centre d'examen de Libreville" })
   @IsString()
   @IsNotEmpty()
   location: string;

@@ -18,7 +18,9 @@ async function bootstrap() {
   // Configuration Swagger
   const config = new DocumentBuilder()
     .setTitle('Digitalisation Auto-Écoles Gabon')
-    .setDescription('API de gestion nationale des auto-écoles, candidats et examens.')
+    .setDescription(
+      'API de gestion nationale des auto-écoles, candidats et examens.',
+    )
     .setVersion('2.0')
     .addTag('Candidats')
     .addTag('AutoEcoles')
@@ -39,4 +41,4 @@ async function bootstrap() {
 
   await app.listen(process.env.PORT ?? 3000);
 }
-bootstrap();
+bootstrap().catch((err) => console.error(err));

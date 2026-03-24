@@ -23,7 +23,9 @@ export class Invoice {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   total_amount: number;
 
-  @OneToOne(() => Payment, (payment) => payment.invoice, { onDelete: 'CASCADE' })
+  @OneToOne(() => Payment, (payment) => payment.invoice, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'payment_id' })
   payment: Payment;
 

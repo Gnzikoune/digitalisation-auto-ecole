@@ -15,7 +15,9 @@ export class CandidateDocument {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Candidate, (candidate) => candidate.documents, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Candidate, (candidate) => candidate.documents, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'candidate_id' })
   candidate: Candidate;
 

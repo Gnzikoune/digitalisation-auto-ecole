@@ -44,21 +44,25 @@ export class ExamensService {
     return await this.examRepository.save(exam);
   }
 
-  async createConvocation(examId: string, dto: CreateConvocationDto): Promise<ExamResult> {
+  async createConvocation(
+    examId: string,
+    dto: CreateConvocationDto,
+  ): Promise<ExamResult> {
     const result = this.resultRepository.create({
       candidate_id: dto.candidate_id,
       exam_id: examId,
-      result: 'pending'
+      result: 'pending',
     });
     return await this.resultRepository.save(result);
   }
 
   async updateResult(id: string, dto: UpdateResultDto): Promise<ExamResult> {
-    const resultEntry = await this.resultRepository.findOne({ 
+    const resultEntry = await this.resultRepository.findOne({
       where: { id },
-      relations: ['candidate', 'exam']
+      relations: ['candidate', 'exam'],
     });
-    if (!resultEntry) throw new NotFoundException("Ligne de résultat non trouvée");
+    if (!resultEntry)
+      throw new NotFoundException('Ligne de résultat non trouvée');
 
     this.resultRepository.merge(resultEntry, dto);
     const saved = await this.resultRepository.save(resultEntry);

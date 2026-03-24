@@ -22,7 +22,10 @@ export class CreateMoniteurDto {
   @IsNotEmpty()
   phone: string;
 
-  @ApiProperty({ enum: ['theorie', 'conduite', 'polyvalent'], example: 'polyvalent' })
+  @ApiProperty({
+    enum: ['theorie', 'conduite', 'polyvalent'],
+    example: 'polyvalent',
+  })
   @IsEnum(['theorie', 'conduite', 'polyvalent'])
   specialization: string;
 

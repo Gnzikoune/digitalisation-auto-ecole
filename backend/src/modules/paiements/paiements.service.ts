@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreatePaiementDto } from './dto/create-paiement.dto';
-import { UpdatePaiementDto } from './dto/update-paiement.dto';
 import { Payment } from './entities/payment.entity';
 import { Invoice } from './entities/invoice.entity';
 import { Candidate } from '../candidats/entities/candidate.entity';
@@ -45,7 +44,9 @@ export class PaiementsService {
   }
 
   async findAll(): Promise<Payment[]> {
-    return await this.paymentRepository.find({ relations: ['candidate', 'invoice'] });
+    return await this.paymentRepository.find({
+      relations: ['candidate', 'invoice'],
+    });
   }
 
   async findByCandidate(candidateId: string): Promise<Payment[]> {
@@ -56,14 +57,16 @@ export class PaiementsService {
   }
 
   async getBalance(candidateId: string): Promise<any> {
-    const candidate = await this.candidateRepository.findOne({ where: { id: candidateId } });
+    const candidate = await this.candidateRepository.findOne({
+      where: { id: candidateId },
+    });
     if (!candidate) throw new NotFoundException('Candidat non trouvé');
 
     const payments = await this.findByCandidate(candidateId);
     const totalPaid = payments.reduce((sum, p) => sum + Number(p.amount), 0);
 
     // Prix fictif pour l'exemple (à dynamiser plus tard avec une grille tarifaire)
-    const trainingPrice = 150000; 
+    const trainingPrice = 150000;
     const balance = trainingPrice - totalPaid;
 
     return {

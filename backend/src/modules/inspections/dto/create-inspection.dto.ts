@@ -1,4 +1,11 @@
-import { IsString, IsNotEmpty, IsUUID, IsEnum, IsDateString, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsUUID,
+  IsEnum,
+  IsDateString,
+  IsOptional,
+} from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateInspectionDto {
@@ -12,7 +19,10 @@ export class CreateInspectionDto {
   @IsNotEmpty()
   driving_school_id: string;
 
-  @ApiProperty({ enum: ['conforme', 'non_conforme', 'sous_observation'], example: 'conforme' })
+  @ApiProperty({
+    enum: ['conforme', 'non_conforme', 'sous_observation'],
+    example: 'conforme',
+  })
   @IsEnum(['conforme', 'non_conforme', 'sous_observation'])
   result: string;
 

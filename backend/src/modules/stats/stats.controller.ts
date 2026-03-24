@@ -1,5 +1,5 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { StatsService } from './stats.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -15,19 +15,19 @@ export class StatsController {
   constructor(private readonly statsService: StatsService) {}
 
   @Get('overview')
-  @ApiOperation({ summary: "Tableau de bord global (Admin seul)" })
+  @ApiOperation({ summary: 'Tableau de bord global (Admin seul)' })
   getOverview() {
     return this.statsService.getOverview();
   }
 
   @Get('success-rate')
-  @ApiOperation({ summary: "Taux de réussite national et par catégorie" })
+  @ApiOperation({ summary: 'Taux de réussite national et par catégorie' })
   getSuccessRate() {
     return this.statsService.getSuccessRate();
   }
 
   @Get('monthly-inscriptions')
-  @ApiOperation({ summary: "Volume des inscriptions mensuelles" })
+  @ApiOperation({ summary: 'Volume des inscriptions mensuelles' })
   getMonthlyInscriptions() {
     return this.statsService.getMonthlyInscriptions();
   }

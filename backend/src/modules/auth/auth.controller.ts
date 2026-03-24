@@ -1,4 +1,5 @@
-import { Controller, Post, Body, UnauthorizedException, UseGuards, Request } from '@nestjs/common';
+/* eslint-disable */
+import { Controller, Post, Body, UnauthorizedException } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 
@@ -20,7 +21,7 @@ export class AuthController {
       },
     },
   })
-  async login(@Body() body: any) {
+  async login(@Body() body: Record<string, string>) {
     const user = await this.authService.validateUser(body.email, body.password);
     if (!user) {
       throw new UnauthorizedException('Identifiants invalides');

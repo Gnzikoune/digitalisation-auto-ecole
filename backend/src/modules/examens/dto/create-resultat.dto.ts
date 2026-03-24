@@ -1,4 +1,13 @@
-import { IsString, IsNotEmpty, IsUUID, IsNumber, IsOptional, IsEnum, Min, Max } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsUUID,
+  IsNumber,
+  IsOptional,
+  IsEnum,
+  Min,
+  Max,
+} from 'class-validator';
 
 export class CreateResultatDto {
   @IsUUID()

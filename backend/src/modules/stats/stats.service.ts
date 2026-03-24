@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -18,14 +19,18 @@ export class StatsService {
 
   async getOverview() {
     const totalCandidates = await this.candidateRepository.count();
-    const totalPayments = await this.paymentRepository
+
+    const rawData = await this.paymentRepository
       .createQueryBuilder('payment')
       .select('SUM(payment.amount)', 'total')
       .getRawOne();
 
+    const totalStr: string =
+      rawData && rawData.total ? String(rawData.total) : '0';
+
     return {
       total_candidates: totalCandidates,
-      total_revenue: parseFloat(totalPayments.total || 0),
+      total_revenue: parseFloat(totalStr),
     };
   }
 
@@ -42,7 +47,7 @@ export class StatsService {
     };
   }
 
-  async getMonthlyInscriptions() {
+  async getMonthlyInscriptions(): Promise<{ month: string; count: string }[]> {
     const stats = await this.candidateRepository
       .createQueryBuilder('candidate')
       .select("TO_CHAR(candidate.created_at, 'YYYY-MM')", 'month')

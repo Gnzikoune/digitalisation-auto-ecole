@@ -22,14 +22,19 @@ export class AutoEcolesService {
   }
 
   async findOne(id: string): Promise<DrivingSchool> {
-    const school = await this.drivingSchoolRepository.findOne({ where: { id } });
+    const school = await this.drivingSchoolRepository.findOne({
+      where: { id },
+    });
     if (!school) {
       throw new NotFoundException(`Auto-école avec l'ID ${id} non trouvée`);
     }
     return school;
   }
 
-  async update(id: string, updateAutoEcoleDto: UpdateAutoEcoleDto): Promise<DrivingSchool> {
+  async update(
+    id: string,
+    updateAutoEcoleDto: UpdateAutoEcoleDto,
+  ): Promise<DrivingSchool> {
     const school = await this.findOne(id);
     Object.assign(school, updateAutoEcoleDto);
     return await this.drivingSchoolRepository.save(school);

@@ -1,5 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { PaiementsService } from './paiements.service';
 import { CreatePaiementDto } from './dto/create-paiement.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -15,7 +23,9 @@ export class PaiementsController {
   constructor(private readonly paiementsService: PaiementsService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Enregistrer un nouveau paiement (virement, espèces, etc.)' })
+  @ApiOperation({
+    summary: 'Enregistrer un nouveau paiement (virement, espèces, etc.)',
+  })
   @Roles(UserRole.ADMIN, UserRole.SCHOOL_ADMIN)
   create(@Body() createPaiementDto: CreatePaiementDto) {
     return this.paiementsService.create(createPaiementDto);
@@ -29,7 +39,9 @@ export class PaiementsController {
   }
 
   @Get('candidate/:id')
-  @ApiOperation({ summary: "Récupérer l'historique des paiements d'un candidat" })
+  @ApiOperation({
+    summary: "Récupérer l'historique des paiements d'un candidat",
+  })
   findByCandidate(@Param('id') id: string) {
     return this.paiementsService.findByCandidate(id);
   }

@@ -1,5 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { CandidatsService } from './candidats.service';
 import { CreateCandidatDto } from './dto/create-candidat.dto';
 import { UpdateCandidatDto } from './dto/update-candidat.dto';
@@ -44,7 +53,10 @@ export class CandidatsController {
 
   @Patch(':id')
   @ApiOperation({ summary: "Mettre à jour les informations d'un candidat" })
-  update(@Param('id') id: string, @Body() updateCandidatDto: UpdateCandidatDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateCandidatDto: UpdateCandidatDto,
+  ) {
     return this.candidatsService.update(id, updateCandidatDto);
   }
 

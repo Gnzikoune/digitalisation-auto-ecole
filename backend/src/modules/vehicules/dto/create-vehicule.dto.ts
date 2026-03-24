@@ -17,7 +17,10 @@ export class CreateVehiculeDto {
   @IsNotEmpty()
   license_plate: string;
 
-  @ApiProperty({ example: 'B', description: 'Catégorie de permis (B, C, D...)' })
+  @ApiProperty({
+    example: 'B',
+    description: 'Catégorie de permis (B, C, D...)',
+  })
   @IsString()
   @IsNotEmpty()
   category: string; // B, C, D...

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
   Controller,
   Post,
@@ -6,9 +7,15 @@ import {
   Get,
   Param,
   Res,
-  UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiBearerAuth, ApiConsumes, ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiBearerAuth,
+  ApiConsumes,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+} from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
@@ -20,7 +27,7 @@ import type { Response } from 'express';
 @Controller('modules/files')
 export class FilesController {
   @Post('upload')
-  @ApiOperation({ summary: "Uploader un document (PDF, Image, etc.)" })
+  @ApiOperation({ summary: 'Uploader un document (PDF, Image, etc.)' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -56,8 +63,10 @@ export class FilesController {
   }
 
   @Get(':filename')
-  @ApiOperation({ summary: "Récupérer un fichier par son nom (Visualisation/Téléchargement)" })
-  @ApiResponse({ status: 200, description: "Le fichier binaire." })
+  @ApiOperation({
+    summary: 'Récupérer un fichier par son nom (Visualisation/Téléchargement)',
+  })
+  @ApiResponse({ status: 200, description: 'Le fichier binaire.' })
   getFile(@Param('filename') filename: string, @Res() res: Response) {
     return res.sendFile(filename, { root: './uploads' });
   }

@@ -49,7 +49,10 @@ export class DrivingSchool {
   @Column({ type: 'integer', nullable: true })
   capacity: number;
 
-  @OneToMany(() => DrivingSchoolDocument, (doc: DrivingSchoolDocument) => doc.driving_school)
+  @OneToMany(
+    () => DrivingSchoolDocument,
+    (doc: DrivingSchoolDocument) => doc.driving_school,
+  )
   documents: DrivingSchoolDocument[];
 
   @OneToMany(() => Candidate, (candidate) => candidate.driving_school)
